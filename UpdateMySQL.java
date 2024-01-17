@@ -1,5 +1,5 @@
 import java.sql.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class UpdateMySQL {
 
