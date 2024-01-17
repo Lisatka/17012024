@@ -23,10 +23,8 @@ public class UpdateMySQL {
                 Statement stmSql = conn.createStatement();
                 System.out.println("Digite a nova senha: ");
                 String strNSenha = scnLogin.nextLine();
-
                 String strSqlUpdate = "UPDATE `mysql_connector`.`tbl_login` SET `senha` = '" + strNSenha + "' WHERE (`login` = '" + strLogin + "')";
                 stmSql.executeUpdate(strSqlUpdate);
-
                 status = "Sua senha foi alterada com sucesso!";
                 System.out.println(status);
                 stmSql.close();
@@ -34,8 +32,6 @@ public class UpdateMySQL {
             
         } catch (Exception e) {
             System.err.println("Ops! Ocorreu um erro: " + e);
-       
-           
             scnLogin.close();
             scnResp.close();
         }
