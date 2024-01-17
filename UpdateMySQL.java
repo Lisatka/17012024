@@ -1,43 +1,43 @@
 import java.sql.*;
-import java.util.*;
+import java.util.Scanner;
 
 public class UpdateMySQL {
+
     public static void main(String[] args) {
         String status = "Nada aconteceu ainda.";
         Connection conn = App.conectar();
         Scanner scnLogin = new Scanner(System.in);
-        Scanner scnSenha = new Scanner(System.in);
+        Scanner scnResp = new Scanner(System.in);
 
         try {
             System.out.println("Bem vindo ao Banco de Dados.");
-            System.out.println("Digite o login para realizar o cadastrado: ");
+            System.out.println("Digite seu login : ");
             String strLogin = scnLogin.nextLine();
-            System.out.println("Digite a senha que será cadastrada: ");
-            String strSenha = scnSenha.nextLine();
+            System.out.println("Deseja alterar sua senha? (N) para não, ou (S) para sim. ");
+            String strResp = scnResp.nextLine();
 
-            
-            String strSqlSelect = "SELECT * FROM `mysql_connector`.`tbl_login` WHERE `login` = '" + strLogin + "' AND `senha` = '" + strSenha + "';";
-            Statement stmSql = conn.createStatement();
-            ResultSet rsSql = stmSql.executeQuery(strSqlSelect);
-
-            if (rsSql.next()) {
-               
-                status = "Ops! Este login já está cadastrado.";
+            if (strResp.equalsIgnoreCase("N")) {
+                status = "Login concluído. ";
+                System.out.println(status);
             } else {
-               
-                String strSqlInsert = "INSERT INTO `mysql_connector`.`tbl_login` (`login`, `senha`) VALUES ('" + strLogin + "', '" + strSenha + "');";
-                stmSql.executeUpdate(strSqlInsert);
+                Statement stmSql = conn.createStatement();
+                System.out.println("Digite a nova senha: ");
+                String strNSenha = scnLogin.nextLine();
 
-               
-                status = "Cadastro realizado com sucesso!";
+                String strSqlUpdate = "UPDATE `mysql_connector`.`tbl_login` SET `senha` = '" + strNSenha + "' WHERE (`login` = '" + strLogin + "')";
+                stmSql.executeUpdate(strSqlUpdate);
+
+                status = "Sua senha foi alterada com sucesso!";
+                System.out.println(status);
+                stmSql.close();
             }
-
-            stmSql.close();
-            rsSql.close();
+            
         } catch (Exception e) {
-            System.out.println("Ops! Ocorreu o erro " + e);
+            System.err.println("Ops! Ocorreu um erro: " + e);
+       
+           
+            scnLogin.close();
+            scnResp.close();
         }
-
-        System.out.println(status);
     }
 }
